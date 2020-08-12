@@ -1,0 +1,46 @@
+name: infinitefuture
+version: git
+summary: Infinitefuture Daemon # 79 char long summary
+description: |
+  This snap provides the Infinitefuture daemon infinitefutured and the command line
+  tool infinitefuturecli.
+grade: stable
+confinement: strict
+
+apps:
+    infinitefutured:
+        command: bin/infinitefutured
+        plugs: [home,network,network-bind]
+    infinitefuturecli:
+        command: bin/infinitefuturecli
+        plugs: [home,network,network-bind,raw-usb]
+
+parts:
+  infinitefuture:
+    plugin: dump
+    source: ./
+    override-pull: |
+        rootdir=$(pwd)
+        gitroot=$(git rev-parse --show-toplevel)
+        cd ${gitroot} && git archive \
+            -o ${rootdir}/infinitefuture-git.tar.gz \
+            --format tar.gz -9 --prefix infinitefuture-git/ HEAD
+        cd ${rootdir}
+        tar xf infinitefuture-git.tar.gz ; rm -f infinitefuture-git.tar.gz
+        mkdir -p go/src/github.com/cosmos bin
+        mv infinitefuture-git/ go/src/github.com/cosmos/cosmos-sdk/
+
+    build-snaps: [go]
+    override-build: |
+        base=`pwd`
+        export GO111MODULE=on
+        export GOPATH=`pwd`/go
+        export GOBIN=$GOPATH/bin
+        export PATH=$GOBIN:$PATH
+        cd $GOPATH/src/github.com/cosmos/cosmos-sdk
+        make go-mod-cache
+        make tools
+        make install
+        mkdir $SNAPCRAFT_PART_INSTALL/bin
+        cp $GOPATH/bin/infinitefutured $SNAPCRAFT_PART_INSTALL/bin
+        cp $GOPATH/bin/infinitefuturecli $SNAPCRAFT_PART_INSTALL/bin
