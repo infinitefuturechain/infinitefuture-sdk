@@ -35,6 +35,12 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [Released]
 
+## [v1.0.1] - 2020-08-12
+
+### Improvements
+
+* update coin type to 868
+
 ## [v1.0.0] - 2020-08-12
 
 ### Improvements
