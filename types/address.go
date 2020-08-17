@@ -35,11 +35,11 @@ const (
 	Bech32MainPrefix = "if"
 
 	// Atom in https://github.com/satoshilabs/slips/blob/master/slip-0044.md
-	CoinType = 86888
+	CoinType = 868
 
 	// BIP44Prefix is the parts of the BIP44 HD path that are fixed by
 	// what we used during the fundraiser.
-	FullFundraiserPath = "44'/86888'/0'/0/0"
+	FullFundraiserPath = "44'/868'/0'/0/0"
 
 	// PrefixAccount is the prefix for account keys
 	PrefixAccount = "acc"
